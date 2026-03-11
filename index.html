@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nhật Ký Sức Khoẻ — Pitch Deck</title>
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --blue: #0EA5E9;
+    --blue-dark: #0284C7;
+    --blue-light: #E0F2FE;
+    --green: #10B981;
+    --green-dark: #059669;
+    --green-light: #D1FAE5;
+    --amber: #F59E0B;
+    --amber-light: #FEF3C7;
+    --red: #EF4444;
+    --red-light: #FEE2E2;
+    --gray-50: #F8FAFC;
+    --gray-100: #F1F5F9;
+    --gray-200: #E2E8F0;
+    --gray-300: #CBD5E1;
+    --gray-400: #94A3B8;
+    --gray-500: #64748B;
+    --gray-600: #475569;
+    --gray-700: #334155;
+    --gray-800: #1E293B;
+    --gray-900: #0F172A;
+    --radius: 16px;
+    --shadow: 0 4px 24px rgba(0,0,0,0.08);
+    --shadow-lg: 0 8px 40px rgba(0,0,0,0.12);
+  }
+
+  html, body {
+    width: 100%; height: 100%;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background: var(--gray-900);
+    color: var(--gray-800);
+    overflow: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Presentation container ── */
+  .deck { width: 100%; height: 100%; position: relative; }
+
+  .slide {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: 24px 60px;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.5s ease, transform 0.5s ease;
+    transform: translateX(40px);
+    background: #fff;
+    overflow-y: auto;
+  }
+  .slide.active { opacity: 1; pointer-events: auto; transform: translateX(0); z-index: 2; }
+  .slide.exit-left { opacity: 0; transform: translateX(-40px); }
+
+  /* ── Animated elements ── */
+  .anim {
+    opacity: 0; transform: translateY(28px);
+    transition: opacity 0.6s cubic-bezier(0.22,1,0.36,1), transform 0.6s cubic-bezier(0.22,1,0.36,1);
+  }
+  .slide.active .anim.visible { opacity: 1; transform: translateY(0); }
+
+  /* ── Navigation ── */
+  .nav-controls { position: fixed; bottom: 32px; right: 40px; display: flex; gap: 12px; z-index: 100; }
+  .nav-btn {
+    width: 48px; height: 48px; border: none; border-radius: 50%;
+    background: var(--blue); color: #fff; font-size: 20px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s; box-shadow: 0 4px 16px rgba(14,165,233,0.3);
+  }
+  .nav-btn:hover { background: var(--blue-dark); transform: scale(1.08); }
+  .nav-btn:disabled { opacity: 0.3; cursor: default; transform: none; }
+
+  /* ── Progress bar ── */
+  .progress-bar {
+    position: fixed; bottom: 0; left: 0; height: 4px;
+    background: linear-gradient(90deg, var(--blue), var(--green));
+    transition: width 0.4s ease; z-index: 100; border-radius: 0 2px 0 0;
+  }
+
+  /* ── Slide counter ── */
+  .slide-counter {
+    position: fixed; bottom: 44px; left: 40px;
+    font-size: 14px; font-weight: 600; color: var(--gray-400);
+    z-index: 100; letter-spacing: 1px;
+  }
+
+  .slide-label {
+    font-size: 13px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 3px; color: var(--blue); margin-bottom: 10px;
+  }
+  .slide-title {
+    font-size: clamp(26px, 3.5vw, 44px); font-weight: 800;
+    color: var(--gray-900); margin-bottom: 12px; line-height: 1.2; text-align: center;
+  }
+  .slide-subtitle {
+    font-size: clamp(15px, 1.8vw, 20px); color: var(--gray-500);
+    margin-bottom: 36px; text-align: center; max-width: 700px; line-height: 1.6;
+  }
+
+  /* ════════ SLIDE 1 — COVER ════════ */
+  .cover-slide {
+    background: linear-gradient(135deg, #0F172A 0%, #1E3A5F 50%, #0F172A 100%);
+    position: relative; overflow: hidden;
+  }
+  .cover-particles { position: absolute; inset: 0; overflow: hidden; }
+  .particle {
+    position: absolute; border-radius: 50%; background: rgba(14,165,233,0.15);
+    animation: particleFloat 8s ease-in-out infinite;
+  }
+  .particle:nth-child(1) { width: 300px; height: 300px; top: -100px; left: -50px; }
+  .particle:nth-child(2) { width: 200px; height: 200px; bottom: -60px; right: -40px; animation-delay: 2s; background: rgba(16,185,129,0.12); }
+  .particle:nth-child(3) { width: 150px; height: 150px; top: 30%; right: 10%; animation-delay: 4s; }
+  .particle:nth-child(4) { width: 250px; height: 250px; bottom: 20%; left: 15%; animation-delay: 1s; background: rgba(16,185,129,0.08); }
+  .particle:nth-child(5) { width: 100px; height: 100px; top: 15%; left: 40%; animation-delay: 3s; }
+  @keyframes particleFloat {
+    0%, 100% { transform: translate(0,0) scale(1); }
+    33% { transform: translate(30px,-20px) scale(1.05); }
+    66% { transform: translate(-20px,15px) scale(0.95); }
+  }
+
+  .cover-content { position: relative; z-index: 2; text-align: center; display: flex; flex-direction: column; align-items: center; }
+  .health-ring-wrap { width: 150px; height: 150px; margin-bottom: 32px; position: relative; }
+  .health-ring-svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+  .ring-bg { fill: none; stroke: rgba(255,255,255,0.1); stroke-width: 8; }
+  .ring-fg {
+    fill: none; stroke: url(#ringGrad); stroke-width: 8;
+    stroke-linecap: round; stroke-dasharray: 408; stroke-dashoffset: 408;
+    transition: stroke-dashoffset 2s cubic-bezier(0.22,1,0.36,1);
+  }
+  .slide.active .ring-fg { stroke-dashoffset: 72; }
+  .ring-score { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #fff; }
+  .ring-score-num {
+    font-size: 40px; font-weight: 800;
+    background: linear-gradient(135deg, var(--blue), var(--green));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; line-height: 1;
+  }
+  .ring-score-label { font-size: 11px; color: var(--gray-400); text-transform: uppercase; letter-spacing: 2px; margin-top: 4px; }
+
+  .cover-app-name {
+    font-size: clamp(48px,7vw,80px); font-weight: 900;
+    background: linear-gradient(135deg, #38BDF8, #34D399);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    letter-spacing: -1px; line-height: 1.1;
+  }
+  .cover-diary { font-size: clamp(14px,1.8vw,18px); color: var(--gray-400); letter-spacing: 6px; text-transform: uppercase; margin-top: 8px; margin-bottom: 24px; }
+  .cover-tagline { font-size: clamp(18px,2.5vw,26px); color: rgba(255,255,255,0.85); font-weight: 400; max-width: 600px; line-height: 1.5; }
+  .cover-tagline em { color: var(--green); font-style: normal; font-weight: 700; }
+  .cover-badge {
+    margin-top: 40px; display: inline-flex; align-items: center; gap: 8px;
+    padding: 10px 24px; border-radius: 999px;
+    background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+    color: var(--gray-300); font-size: 14px;
+  }
+  .pulse-dot { width: 8px; height: 8px; background: var(--green); border-radius: 50%; animation: pulse 2s ease-in-out infinite; }
+  @keyframes pulse { 0%,100% { opacity:1; transform:scale(1); } 50% { opacity:0.5; transform:scale(1.5); } }
+
+  /* ════════ SLIDE 2 — PROBLEM ════════ */
+  .problem-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; width: 100%; max-width: 1100px; }
+  .problem-col {
+    background: var(--gray-50); border-radius: var(--radius); padding: 28px 24px;
+    border: 1px solid var(--gray-200); transition: transform 0.3s, box-shadow 0.3s;
+  }
+  .problem-col:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+  .problem-col.patient { border-top: 4px solid var(--amber); }
+  .problem-col.family { border-top: 4px solid var(--red); }
+  .problem-col.doctor { border-top: 4px solid var(--blue); }
+  .problem-icon { font-size: 32px; margin-bottom: 10px; }
+  .problem-role { font-size: 17px; font-weight: 700; color: var(--gray-800); margin-bottom: 14px; }
+  .problem-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .problem-list li { font-size: 14px; color: var(--gray-600); line-height: 1.5; padding-left: 20px; position: relative; }
+  .problem-list li::before { content: '✕'; position: absolute; left: 0; color: var(--red); font-weight: 700; font-size: 11px; top: 2px; }
+
+  /* stat callout */
+  .stat-callout {
+    margin-top: 14px; padding: 10px 14px; border-radius: 10px;
+    background: var(--red-light); border-left: 3px solid var(--red);
+    font-size: 13px; line-height: 1.5;
+  }
+  .stat-callout strong { color: var(--red); font-size: 20px; display: block; margin-bottom: 2px; }
+  .stat-callout .src { color: var(--gray-400); font-size: 11px; font-style: italic; display: block; margin-top: 4px; }
+  .stat-callout.blue { background: var(--blue-light); border-left-color: var(--blue); }
+  .stat-callout.blue strong { color: var(--blue-dark); }
+  .stat-callout.amber { background: var(--amber-light); border-left-color: var(--amber); }
+  .stat-callout.amber strong { color: #92400E; }
+  .stat-callout a, .stat-src a, .h-stat a { color: inherit; text-decoration: underline; text-decoration-style: dotted; text-underline-offset: 2px; transition: opacity 0.2s; }
+  .stat-callout a:hover, .stat-src a:hover, .h-stat a:hover { opacity: 0.7; }
+
+  /* ════════ SLIDE 2b — KEY STATS ════════ */
+  .stats-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 20px; width: 100%; max-width: 1000px; }
+  .stat-card {
+    background: var(--gray-50); border-radius: var(--radius); padding: 28px 24px;
+    text-align: center; border: 1px solid var(--gray-200);
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  .stat-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+  .stat-card .stat-num {
+    font-size: clamp(32px,4vw,48px); font-weight: 900; line-height: 1;
+    margin-bottom: 8px;
+  }
+  .stat-card .stat-num.red { color: var(--red); }
+  .stat-card .stat-num.amber { color: var(--amber); }
+  .stat-card .stat-num.blue { color: var(--blue); }
+  .stat-card .stat-num.green { color: var(--green); }
+  .stat-card .stat-desc { font-size: 14px; color: var(--gray-600); line-height: 1.45; margin-bottom: 8px; }
+  .stat-card .stat-src { font-size: 11px; color: var(--gray-400); font-style: italic; }
+
+  /* ════════ SLIDE 3 — SOLUTION ════════ */
+  .solution-steps { display: flex; flex-direction: column; width: 100%; max-width: 700px; }
+  .solution-step { display: flex; align-items: flex-start; gap: 24px; position: relative; padding-bottom: 32px; }
+  .solution-step:last-child { padding-bottom: 0; }
+  .step-num-wrap {
+    flex-shrink: 0; width: 52px; height: 52px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; font-weight: 800; color: #fff; z-index: 2;
+  }
+  .solution-step:nth-child(1) .step-num-wrap { background: linear-gradient(135deg, var(--blue), #38BDF8); }
+  .solution-step:nth-child(2) .step-num-wrap { background: linear-gradient(135deg, var(--green), #34D399); }
+  .solution-step:nth-child(3) .step-num-wrap { background: linear-gradient(135deg, var(--amber), #FBBF24); }
+  .solution-step:nth-child(4) .step-num-wrap { background: linear-gradient(135deg, #8B5CF6, #A78BFA); }
+  .solution-step:nth-child(5) .step-num-wrap { background: linear-gradient(135deg, var(--red), #F87171); }
+  .step-line { position: absolute; left: 25px; top: 52px; width: 2px; height: calc(100% - 52px); background: var(--gray-200); }
+  .solution-step:last-child .step-line { display: none; }
+  .step-content h3 { font-size: 18px; font-weight: 700; color: var(--gray-800); margin-bottom: 4px; margin-top: 2px; }
+  .step-content p { font-size: 15px; color: var(--gray-500); line-height: 1.5; }
+
+  /* ════════ SLIDE 4 — DEMO (Interactive Carousel) ════════ */
+  .demo-container {
+    display: flex; align-items: center; gap: 48px;
+    width: 100%; max-width: 1100px; justify-content: center;
+  }
+
+  /* Main phone */
+  .demo-phone-main {
+    flex-shrink: 0; width: 264px; background: var(--gray-900);
+    border-radius: 36px; padding: 12px; position: relative;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.25), 0 0 0 1px rgba(255,255,255,0.05);
+  }
+  .demo-phone-notch {
+    width: 80px; height: 24px; background: var(--gray-900);
+    border-radius: 0 0 14px 14px; margin: -10px auto 6px;
+    position: relative; z-index: 3;
+  }
+  .demo-phone-notch::after {
+    content: ''; position: absolute; top: 10px; left: 50%; transform: translateX(-50%);
+    width: 40px; height: 6px; background: var(--gray-700); border-radius: 3px;
+  }
+  .demo-screen-wrap {
+    width: 100%; aspect-ratio: 9/19.5; border-radius: 18px;
+    overflow: hidden; position: relative; background: #000;
+  }
+  .demo-screen-wrap img {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    object-fit: cover; opacity: 0;
+    transition: opacity 0.5s ease;
+  }
+  .demo-screen-wrap img.demo-active { opacity: 1; }
+  .demo-phone-bar {
+    width: 100px; height: 5px; background: var(--gray-600);
+    border-radius: 3px; margin: 10px auto 0;
+  }
+
+  /* Info panel */
+  .demo-info {
+    flex: 1; max-width: 480px;
+  }
+  .demo-step-num {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 36px; height: 36px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--blue), var(--green));
+    color: #fff; font-weight: 800; font-size: 16px; margin-bottom: 12px;
+  }
+  .demo-screen-title {
+    font-size: 24px; font-weight: 800; color: var(--gray-900);
+    margin-bottom: 8px; transition: opacity 0.4s;
+  }
+  .demo-screen-desc {
+    font-size: 16px; color: var(--gray-500); line-height: 1.6;
+    margin-bottom: 24px; transition: opacity 0.4s; min-height: 80px;
+  }
+  .demo-screen-desc strong { color: var(--gray-700); }
+
+  /* Thumbnail strip */
+  .demo-thumbs {
+    display: flex; gap: 8px; flex-wrap: wrap;
+  }
+  .demo-thumb {
+    width: 52px; height: 52px; border-radius: 12px;
+    border: 2px solid var(--gray-200); cursor: pointer;
+    overflow: hidden; transition: all 0.25s; opacity: 0.5;
+    position: relative;
+  }
+  .demo-thumb img {
+    width: 100%; height: 100%; object-fit: cover;
+  }
+  .demo-thumb.thumb-active {
+    border-color: var(--blue); opacity: 1;
+    box-shadow: 0 0 0 2px rgba(14,165,233,0.3);
+    transform: scale(1.08);
+  }
+  .demo-thumb:hover { opacity: 0.8; transform: scale(1.05); }
+
+  /* Progress dots (below phone) */
+  .demo-dots {
+    display: flex; gap: 8px; justify-content: center; margin-top: 16px;
+  }
+  .demo-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--gray-300); cursor: pointer;
+    transition: all 0.3s;
+  }
+  .demo-dot.dot-active {
+    background: var(--blue); width: 24px; border-radius: 4px;
+  }
+
+  /* Auto-play toggle */
+  .demo-autoplay {
+    display: inline-flex; align-items: center; gap: 8px;
+    margin-top: 20px; padding: 8px 16px; border-radius: 999px;
+    background: var(--gray-100); border: 1px solid var(--gray-200);
+    font-size: 13px; color: var(--gray-500); cursor: pointer;
+    transition: all 0.2s;
+  }
+  .demo-autoplay:hover { background: var(--blue-light); color: var(--blue-dark); }
+  .demo-autoplay.playing { background: var(--blue-light); color: var(--blue); border-color: var(--blue); }
+  .demo-autoplay .play-icon { font-size: 14px; }
+
+  /* Flow arrow between thumbs hint */
+  .demo-flow-label {
+    font-size: 11px; color: var(--gray-400); text-transform: uppercase;
+    letter-spacing: 2px; font-weight: 600; margin-bottom: 8px;
+  }
+
+  @media (max-width: 768px) {
+    .demo-container { flex-direction: column; gap: 28px; }
+    .demo-phone-main { width: 200px; }
+    .demo-info { text-align: center; }
+    .demo-thumbs { justify-content: center; }
+  }
+
+  /* ════════ SLIDE 5 — FEATURES ════════ */
+  .features-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 18px; width: 100%; max-width: 1000px; }
+  .feature-card {
+    background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: var(--radius);
+    padding: 24px; transition: transform 0.3s, box-shadow 0.3s;
+  }
+  .feature-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+  .feature-emoji { font-size: 28px; margin-bottom: 10px; display: block; }
+  .feature-card h3 { font-size: 16px; font-weight: 700; color: var(--gray-800); margin-bottom: 6px; }
+  .feature-card p { font-size: 14px; color: var(--gray-500); line-height: 1.5; }
+  .feature-badge { display: inline-block; padding: 3px 10px; border-radius: 999px; background: var(--amber-light); color: #92400E; font-size: 11px; font-weight: 700; margin-top: 6px; }
+  .feature-stat { margin-top: 8px; font-size: 12px; color: var(--blue-dark); font-weight: 600; }
+
+  /* ════════ SLIDE 6 — PATIENT BENEFITS ════════ */
+  .benefits-list { display: flex; flex-direction: column; gap: 12px; width: 100%; max-width: 750px; }
+  .benefit-item {
+    display: flex; align-items: flex-start; gap: 14px; padding: 14px 18px;
+    border-radius: 12px; background: var(--gray-50); border: 1px solid var(--gray-100);
+    transition: transform 0.2s, background 0.2s;
+  }
+  .benefit-item:hover { background: var(--blue-light); transform: translateX(4px); }
+  .benefit-icon {
+    font-size: 22px; flex-shrink: 0; width: 38px; height: 38px;
+    display: flex; align-items: center; justify-content: center;
+    background: #fff; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  }
+  .benefit-text strong { display: block; font-size: 15px; color: var(--gray-800); margin-bottom: 2px; }
+  .benefit-text span { font-size: 13px; color: var(--gray-500); }
+
+  /* ════════ SLIDE 7 — HOSPITAL BENEFITS ════════ */
+  .hospital-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px,1fr)); gap: 20px; width: 100%; max-width: 900px; }
+  .hospital-card {
+    background: linear-gradient(135deg, var(--blue-light), #fff); border-radius: var(--radius);
+    padding: 24px; border: 1px solid rgba(14,165,233,0.15);
+    transition: transform 0.3s, box-shadow 0.3s; position: relative; overflow: hidden;
+  }
+  .hospital-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(14,165,233,0.15); }
+  .hospital-card::before { content: ''; position: absolute; top: -20px; right: -20px; width: 80px; height: 80px; background: rgba(14,165,233,0.06); border-radius: 50%; }
+  .hospital-card .h-icon { font-size: 26px; margin-bottom: 10px; display: block; }
+  .hospital-card h3 { font-size: 16px; font-weight: 700; color: var(--gray-800); margin-bottom: 6px; }
+  .hospital-card p { font-size: 14px; color: var(--gray-500); line-height: 1.5; }
+  .hospital-card .h-stat { margin-top: 10px; padding: 8px 12px; border-radius: 8px; background: rgba(14,165,233,0.08); font-size: 12px; color: var(--blue-dark); line-height: 1.4; }
+  .hospital-card .h-stat strong { font-size: 16px; display: block; margin-bottom: 2px; color: var(--blue); }
+
+  /* ════════ SLIDE 8 — TECH ════════ */
+  .tech-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 20px; width: 100%; max-width: 800px; }
+  .tech-card {
+    background: var(--gray-900); border-radius: var(--radius); padding: 28px;
+    color: #fff; position: relative; overflow: hidden; transition: transform 0.3s;
+  }
+  .tech-card:hover { transform: translateY(-4px); }
+  .tech-card::after { content: ''; position: absolute; bottom: -30px; right: -30px; width: 100px; height: 100px; border-radius: 50%; background: rgba(14,165,233,0.1); }
+  .tech-icon { font-size: 28px; margin-bottom: 14px; display: block; }
+  .tech-card h3 { font-size: 16px; font-weight: 700; margin-bottom: 6px; color: #fff; }
+  .tech-card p { font-size: 13px; color: var(--gray-400); line-height: 1.5; }
+
+  /* ════════ SLIDE 9 — TIMELINE ════════ */
+  .timeline { display: flex; flex-direction: column; width: 100%; max-width: 700px; position: relative; }
+  .timeline::before { content: ''; position: absolute; left: 30px; top: 0; bottom: 0; width: 3px; background: linear-gradient(180deg, var(--blue), var(--green), var(--amber)); border-radius: 2px; }
+  .timeline-item { display: flex; gap: 24px; padding: 20px 0; position: relative; }
+  .timeline-dot {
+    flex-shrink: 0; width: 60px; height: 60px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; font-weight: 800; color: #fff; z-index: 2;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+  }
+  .timeline-item:nth-child(1) .timeline-dot { background: linear-gradient(135deg, var(--blue), #38BDF8); }
+  .timeline-item:nth-child(2) .timeline-dot { background: linear-gradient(135deg, var(--green), #34D399); }
+  .timeline-item:nth-child(3) .timeline-dot { background: linear-gradient(135deg, var(--amber), #FBBF24); }
+  .timeline-content { flex: 1; padding-top: 6px; }
+  .timeline-phase { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: var(--blue); margin-bottom: 4px; }
+  .timeline-content h3 { font-size: 18px; font-weight: 700; color: var(--gray-800); margin-bottom: 4px; }
+  .timeline-content p { font-size: 14px; color: var(--gray-500); line-height: 1.5; }
+
+  /* ════════ SLIDE 10 — CLOSING ════════ */
+  .closing-slide { background: linear-gradient(135deg, #0F172A 0%, #1E3A5F 50%, #0F172A 100%); position: relative; overflow: hidden; }
+  .closing-title {
+    font-size: clamp(26px,4.5vw,52px); font-weight: 900;
+    background: linear-gradient(135deg, #38BDF8, #34D399);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    text-align: center; line-height: 1.2; margin-bottom: 14px;
+  }
+  .closing-sub { font-size: clamp(16px,2.5vw,26px); color: rgba(255,255,255,0.7); text-align: center; margin-bottom: 40px; }
+  .cta-btn {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 14px 36px; border-radius: 999px;
+    background: linear-gradient(135deg, var(--blue), var(--green));
+    color: #fff; font-size: 17px; font-weight: 700; border: none; cursor: pointer;
+    box-shadow: 0 8px 32px rgba(14,165,233,0.35);
+    transition: transform 0.2s, box-shadow 0.2s; text-decoration: none;
+  }
+  .cta-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(14,165,233,0.45); }
+  .closing-contact { margin-top: 36px; text-align: center; color: var(--gray-400); font-size: 14px; line-height: 1.8; }
+  .closing-contact strong { color: rgba(255,255,255,0.8); }
+  .thank-you { margin-top: 36px; font-size: 64px; animation: thankPulse 2s ease-in-out infinite; }
+  @keyframes thankPulse { 0%,100% { transform:scale(1); } 50% { transform:scale(1.15); } }
+
+  .key-hint {
+    position: fixed; top: 20px; right: 40px; font-size: 12px;
+    color: var(--gray-400); z-index: 100; display: flex; gap: 8px;
+    align-items: center; opacity: 0.6; transition: opacity 0.3s;
+  }
+  .key-hint:hover { opacity: 1; }
+  .key-hint kbd { display: inline-block; padding: 2px 8px; border-radius: 4px; background: var(--gray-100); border: 1px solid var(--gray-300); font-family: inherit; font-size: 11px; color: var(--gray-600); }
+
+  @media (max-width: 768px) {
+    .slide { padding: 32px 20px; }
+    .problem-grid, .stats-grid, .features-grid { grid-template-columns: 1fr; }
+    .mockup-row { gap: 10px; }
+    .phone-mockup { width: 120px; border-radius: 22px; padding: 6px; }
+    .phone-screen { height: 210px; border-radius: 16px; }
+    .phone-notch { width: 40px; height: 4px; margin-bottom: 4px; }
+    .tech-grid, .hospital-grid { grid-template-columns: 1fr; }
+    .nav-controls { bottom: 20px; right: 20px; }
+    .slide-counter { bottom: 32px; left: 20px; }
+    .key-hint { display: none; }
+    .phone-label { font-size: 11px; margin-top: 8px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="deck" id="deck">
+
+  <!-- ══════ SLIDE 1 — COVER ══════ -->
+  <div class="slide cover-slide active" data-slide="0">
+    <div class="cover-particles"><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div></div>
+    <div class="cover-content">
+      <div class="anim health-ring-wrap" data-delay="0">
+        <svg class="health-ring-svg" viewBox="0 0 140 140">
+          <defs><linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#0EA5E9"/><stop offset="100%" stop-color="#10B981"/></linearGradient></defs>
+          <circle class="ring-bg" cx="70" cy="70" r="65"/>
+          <circle class="ring-fg" cx="70" cy="70" r="65"/>
+        </svg>
+        <div class="ring-score">
+          <div class="ring-score-num">82</div>
+          <div class="ring-score-label">Health Score</div>
+        </div>
+      </div>
+      <div class="anim" data-delay="200"><div class="cover-app-name">Nhật Ký Sức Khoẻ</div></div>
+      <div class="anim cover-diary" data-delay="400">Health Diary</div>
+      <div class="anim cover-tagline" data-delay="600">Hiểu kết quả xét nghiệm của bạn —<br>chỉ trong <em>30 giây</em></div>
+      <div class="anim cover-badge" data-delay="900"><div class="pulse-dot"></div>AI-Powered Health Tracking</div>
+    </div>
+  </div>
+
+  <!-- ══════ SLIDE 1b — CHÀO HỎI BỆNH VIỆN TÂN PHÚC ══════ -->
+  <div class="slide" data-slide="1" style="background:linear-gradient(135deg,#f0faf5 0%,#e8f5ee 50%,#fff 100%);">
+    <div class="anim" data-delay="0" style="margin-bottom:24px;">
+      <img src="screenshots/tanphuc-logo.png" style="height:80px;object-fit:contain;border-radius:8px;">
+    </div>
+    <div class="anim slide-title" data-delay="200" style="color:#2E7D32;">
+      Kính chào Ban Giám đốc<br>Hệ thống Phòng khám Đa khoa Tân Phúc
+    </div>
+    <div class="anim slide-subtitle" data-delay="400" style="max-width:650px;">
+      Chúng tôi xin trân trọng giới thiệu đề án hợp tác ứng dụng công nghệ<br>
+      nâng cao trải nghiệm chăm sóc sức khoẻ cho bệnh nhân Tân Phúc
+    </div>
+    <div class="anim" data-delay="700" style="display:flex;gap:32px;margin-top:16px;">
+      <div style="text-align:center;padding:20px 28px;border-radius:16px;background:#fff;border:1px solid #E2E8F0;box-shadow:0 4px 16px rgba(0,0,0,0.06);">
+        <div style="font-size:32px;margin-bottom:8px;">🤝</div>
+        <div style="font-size:15px;font-weight:700;color:#334155;">Hợp tác</div>
+        <div style="font-size:13px;color:#64748B;">Cùng phát triển</div>
+      </div>
+      <div style="text-align:center;padding:20px 28px;border-radius:16px;background:#fff;border:1px solid #E2E8F0;box-shadow:0 4px 16px rgba(0,0,0,0.06);">
+        <div style="font-size:32px;margin-bottom:8px;">💚</div>
+        <div style="font-size:15px;font-weight:700;color:#334155;">Vì bệnh nhân</div>
+        <div style="font-size:13px;color:#64748B;">Nâng cao chất lượng</div>
+      </div>
+      <div style="text-align:center;padding:20px 28px;border-radius:16px;background:#fff;border:1px solid #E2E8F0;box-shadow:0 4px 16px rgba(0,0,0,0.06);">
+        <div style="font-size:32px;margin-bottom:8px;">🚀</div>
+        <div style="font-size:15px;font-weight:700;color:#334155;">Đổi mới</div>
+        <div style="font-size:13px;color:#64748B;">Ứng dụng công nghệ</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════ SLIDE 2 — VẤN ĐỀ THỰC TẾ ══════ -->
+  <div class="slide" data-slide="2">
+
+    <div class="anim slide-title" data-delay="100">Vấn đề thực tế</div>
+    <div class="anim slide-subtitle" data-delay="200">Ai cũng gặp khó khăn — và hậu quả rất nghiêm trọng</div>
+    <div class="problem-grid">
+      <div class="anim problem-col patient" data-delay="400">
+        <div class="problem-icon">😕</div>
+        <div class="problem-role">Bệnh nhân</div>
+        <ul class="problem-list">
+          <li>Nhận phiếu xét nghiệm nhưng không hiểu ý nghĩa các chỉ số</li>
+          <li>Quên chỉ số lần trước, không biết so sánh</li>
+          <li>Không biết tăng/giảm là tốt hay xấu</li>
+          <li>Quên uống thuốc, không theo dõi liên tục</li>
+        </ul>
+        <div class="stat-callout amber">
+          <strong>40–80%</strong>
+          con số xét nghiệm bị quên ngay sau khi rời phòng khám
+          <span class="src">— <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC539473/" target="_blank">PMC — Patients' memory for medical information</a></span>
+        </div>
+      </div>
+      <div class="anim problem-col family" data-delay="600">
+        <div class="problem-icon">👨‍👩‍👧</div>
+        <div class="problem-role">Người nhà</div>
+        <ul class="problem-list">
+          <li>Không được bác sĩ tư vấn trực tiếp</li>
+          <li>Không hiểu tình trạng thực sự của người thân</li>
+          <li>Lo lắng nhưng không biết hỏi ai, hỏi gì</li>
+          <li>Không nhắc được người thân uống thuốc đúng giờ</li>
+        </ul>
+        <div class="stat-callout">
+          <strong>50%</strong>
+          bệnh nhân mãn tính không tuân thủ phác đồ điều trị
+          <span class="src">— <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC3068890/" target="_blank">PMC — Medication Adherence: WHO Cares?</a></span>
+        </div>
+      </div>
+      <div class="anim problem-col doctor" data-delay="800">
+        <div class="problem-icon">👨‍⚕️</div>
+        <div class="problem-role">Bác sĩ / Bệnh viện</div>
+        <ul class="problem-list">
+          <li>Không đủ thời gian giải thích từng chỉ số</li>
+          <li>Bệnh nhân tái khám không đúng hạn</li>
+          <li>Phát hiện bệnh muộn do thiếu theo dõi</li>
+          <li>Quá tải câu hỏi lặp lại từ bệnh nhân</li>
+        </ul>
+        <div class="stat-callout blue">
+          <strong>1–2 phút</strong>
+          thời gian trung bình bác sĩ dành cho mỗi bệnh nhân tại BV công Việt Nam
+          <span class="src">— <a href="https://vietnamnews.vn/" target="_blank">VietnamPlus / Vietnam News</a></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════ SLIDE 2b — CON SỐ BIẾT NÓI ══════ -->
+  <div class="slide" data-slide="3">
+
+    <div class="anim slide-title" data-delay="100">Tại sao cần Nhật Ký Sức Khoẻ?</div>
+    <div class="anim slide-subtitle" data-delay="200">Những con số cho thấy bệnh nhân đang rất cần được hỗ trợ</div>
+    <div class="stats-grid">
+      <div class="anim stat-card" data-delay="350">
+        <div class="stat-num red">40–80%</div>
+        <div class="stat-desc">bệnh nhân <strong>quên con số xét nghiệm</strong> ngay sau khi rời phòng khám</div>
+        <div class="stat-src"><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC539473/" target="_blank">PMC — Patients' memory for medical information</a></div>
+        <div style="margin-top:8px;font-size:12px;color:var(--blue-dark);font-weight:600;">→ App lưu toàn bộ chỉ số xét nghiệm, so sánh qua từng lần khám</div>
+      </div>
+      <div class="anim stat-card" data-delay="500">
+        <div class="stat-num amber">50%</div>
+        <div class="stat-desc">bệnh nhân mãn tính <strong>không uống thuốc</strong> đúng theo chỉ định</div>
+        <div class="stat-src"><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC3068890/" target="_blank">PMC — Medication Adherence: WHO Cares?</a></div>
+        <div style="margin-top:8px;font-size:12px;color:var(--blue-dark);font-weight:600;">→ App nhắc uống thuốc đúng giờ mỗi ngày</div>
+      </div>
+      <div class="anim stat-card" data-delay="650">
+        <div class="stat-num blue">20–30%</div>
+        <div class="stat-desc">bệnh nhân <strong>bỏ lỡ lịch tái khám</strong> vì quên hoặc không thấy cấp thiết</div>
+        <div class="stat-src"><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC8103926/" target="_blank">British Journal of General Practice, 2021</a></div>
+        <div style="margin-top:8px;font-size:12px;color:var(--blue-dark);font-weight:600;">→ App nhắc lịch tái khám + hiển thị chỉ số bất thường rõ ràng</div>
+      </div>
+      <div class="anim stat-card" data-delay="800">
+        <div class="stat-num green">67→87%</div>
+        <div class="stat-desc">tuân thủ thuốc <strong>tăng rõ rệt</strong> khi dùng app nhắc uống thuốc</div>
+        <div class="stat-src"><a href="https://pubmed.ncbi.nlm.nih.gov/" target="_blank">PMC Meta-analysis (1.785 bệnh nhân)</a></div>
+        <div style="margin-top:8px;font-size:12px;color:var(--blue-dark);font-weight:600;">→ Đúng chức năng Nhắc thuốc của Nhật Ký Sức Khoẻ</div>
+      </div>
+    </div>
+    <div class="anim" data-delay="1000" style="margin-top:28px;text-align:center;">
+      <div style="display:inline-flex;gap:24px;flex-wrap:wrap;justify-content:center;">
+        <div style="padding:12px 20px;border-radius:12px;background:var(--amber-light);font-size:14px;color:#92400E;font-weight:600;">
+          1–2 phút: thời gian BS dành cho mỗi BN tại BV công VN <span style="font-weight:400;color:var(--gray-500);font-size:11px;">— <a href="https://vietnamnews.vn/" target="_blank">VietnamPlus</a></span>
+          <span style="display:block;font-size:12px;color:var(--blue-dark);margin-top:2px;">→ App giúp BN tự tra cứu ý nghĩa chỉ số cơ bản, giảm câu hỏi lặp lại</span>
+        </div>
+        <div style="padding:12px 20px;border-radius:12px;background:var(--green-light);font-size:14px;color:var(--green-dark);font-weight:600;">
+          84,4% người Việt dùng smartphone <span style="font-weight:400;color:var(--gray-500);font-size:11px;">— <a href="https://datareportal.com/reports/digital-2025-vietnam" target="_blank">DataReportal 2025</a></span>
+          <span style="display:block;font-size:12px;color:var(--blue-dark);margin-top:2px;">→ Bệnh nhân sẵn sàng sử dụng ngay trên điện thoại</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════ SLIDE 3 — GIẢI PHÁP ══════ -->
+  <div class="slide" data-slide="4">
+
+    <div class="anim slide-title" data-delay="100">Nhật Ký Sức Khoẻ giải quyết tất cả</div>
+    <div class="anim slide-subtitle" data-delay="200">5 bước đơn giản để kiểm soát sức khoẻ</div>
+    <div class="solution-steps">
+      <div class="anim solution-step" data-delay="400">
+        <div class="step-num-wrap">1</div><div class="step-line"></div>
+        <div class="step-content">
+          <h3>Chụp ảnh phiếu xét nghiệm</h3>
+          <p>AI đọc & phân tích tự động — không cần nhập tay</p>
+        </div>
+      </div>
+      <div class="anim solution-step" data-delay="550">
+        <div class="step-num-wrap">2</div><div class="step-line"></div>
+        <div class="step-content">
+          <h3>Điểm sức khoẻ trực quan 0–100</h3>
+          <p>Hiểu ngay tình trạng tổng quát bằng một con số & màu sắc</p>
+        </div>
+      </div>
+      <div class="anim solution-step" data-delay="700">
+        <div class="step-num-wrap">3</div><div class="step-line"></div>
+        <div class="step-content">
+          <h3>Cảnh báo chỉ số bất thường</h3>
+          <p>Nhận alert ngay lập tức theo mức độ nghiêm trọng</p>
+        </div>
+      </div>
+      <div class="anim solution-step" data-delay="850">
+        <div class="step-num-wrap">4</div><div class="step-line"></div>
+        <div class="step-content">
+          <h3>Nhắc uống thuốc & tái khám</h3>
+          <p>Lịch nhắc thông minh, theo dõi tuân thủ phác đồ điều trị</p>
+        </div>
+      </div>
+      <div class="anim solution-step" data-delay="1000">
+        <div class="step-num-wrap">5</div>
+        <div class="step-content">
+          <h3>Hỏi AI bất cứ lúc nào, 24/7</h3>
+          <p>Tra cứu ý nghĩa chỉ số ở mức kiến thức phổ thông, giúp BN chuẩn bị câu hỏi trước khi gặp BS</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════ SLIDE 4 — DEMO (Interactive) ══════ -->
+  <div class="slide" data-slide="5" style="justify-content:flex-start;padding-top:28px;">
+
+    <div class="anim slide-title" data-delay="100" style="font-size:clamp(22px,3vw,36px);margin-bottom:4px;">Trải nghiệm ứng dụng</div>
+    <div class="anim slide-subtitle" data-delay="200" style="margin-bottom:16px;">Chạm vào từng màn hình để khám phá</div>
+    <div class="anim demo-container" data-delay="350">
+      <!-- Phone mockup -->
+      <div style="display:flex;flex-direction:column;align-items:center;">
+        <div class="demo-phone-main">
+          <div class="demo-phone-notch"></div>
+          <div class="demo-screen-wrap" id="demoScreen">
+            <img src="screenshots/01-dashboard.png" class="demo-active" data-idx="0">
+            <img src="screenshots/02-scan.png" data-idx="1">
+            <img src="screenshots/03-biomarkers.png" data-idx="2">
+            <img src="screenshots/04-chart-detail.png" data-idx="3">
+            <img src="screenshots/05-ai-chat.png" data-idx="4">
+            <img src="screenshots/06-med-reminder.png" data-idx="5">
+            <img src="screenshots/07-family.png" data-idx="6">
+            <img src="screenshots/08-lockscreen.png" data-idx="7">
+            <img src="screenshots/09-book-appointment.png" data-idx="8">
+          </div>
+          <div class="demo-phone-bar"></div>
+        </div>
+        <div class="demo-dots" id="demoDots"></div>
+        <div class="demo-autoplay" id="demoAutoplay" onclick="toggleAutoplay()">
+          <span class="play-icon" id="playIcon">&#9654;</span> <span id="playLabel">Tự động phát</span>
+        </div>
+      </div>
+
+      <!-- Info panel -->
+      <div class="demo-info">
+        <div class="demo-step-num" id="demoStepNum">1</div>
+        <div class="demo-screen-title" id="demoTitle">Dashboard — Tổng quan sức khoẻ</div>
+        <div class="demo-screen-desc" id="demoDesc">
+          Điểm sức khoẻ tổng thể <strong>80/100</strong> hiển thị trực quan bằng vòng tròn màu.
+          Cảnh báo chỉ số bất thường (CRP, Đường huyết) ngay trên đầu.
+          Lịch sử 5 lần xét nghiệm gần nhất với số chỉ số & số bất thường.
+        </div>
+        <div class="demo-flow-label">Hành trình sử dụng</div>
+        <div class="demo-thumbs" id="demoThumbs"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════ SLIDE 5 — TÍNH NĂNG CỐT LÕI ══════ -->
+  <div class="slide" data-slide="6">
+
+    <div class="anim slide-title" data-delay="100">Tính năng cốt lõi</div>
+    <div class="anim slide-subtitle" data-delay="200">Tất cả những gì bệnh nhân cần trong một ứng dụng</div>
+    <div class="features-grid">
+      <div class="anim feature-card" data-delay="350">
+        <span class="feature-emoji">📸</span>
+        <h3>Scan AI</h3>
+        <p>Chụp phiếu → tự nhận diện <strong>34 chỉ số</strong>, phân loại <strong>7 hệ cơ quan</strong></p>
+        <div class="feature-stat">Huyết học, Gan, Thận, Lipid, Tiểu đường, Tuyến giáp, Tổng quát</div>
+      </div>
+      <div class="anim feature-card" data-delay="450">
+        <span class="feature-emoji">📊</span>
+        <h3>Theo dõi xu hướng</h3>
+        <p>Biểu đồ lịch sử với khoảng tham chiếu, lọc 6 tháng / 1 năm / 2 năm</p>
+        <div class="feature-stat">Mũi tên tăng/giảm + % thay đổi so với lần trước</div>
+      </div>
+      <div class="anim feature-card" data-delay="550">
+        <span class="feature-emoji">🤖</span>
+        <h3>AI Tra cứu</h3>
+        <p>Giải thích ý nghĩa chỉ số ở mức kiến thức phổ thông, dễ hiểu</p>
+        <div class="feature-stat">Hỗ trợ BN hiểu cơ bản, không thay thế bác sĩ</div>
+      </div>
+      <div class="anim feature-card" data-delay="650">
+        <span class="feature-emoji">🚨</span>
+        <h3>Cảnh báo bất thường</h3>
+        <p>Alert ngay lập tức, phân loại theo mức độ nghiêm trọng với màu sắc</p>
+        <div class="feature-stat">Xanh (bình thường) → Vàng (cần chú ý) → Đỏ (nguy hiểm)</div>
+      </div>
+      <div class="anim feature-card" data-delay="750">
+        <span class="feature-emoji">💊</span>
+        <h3>Nhắc uống thuốc</h3>
+        <p>Lịch uống thuốc hàng ngày, theo dõi tuân thủ, nhắc lịch tái khám</p>
+        <div class="feature-stat">Tuân thủ thuốc tăng 67% → 87% khi có app nhắc (PMC)</div>
+      </div>
+      <div class="anim feature-card" data-delay="850">
+        <span class="feature-emoji">👨‍👩‍👧</span>
+        <h3>Quản lý gia đình</h3>
+        <p>Theo dõi sức khoẻ nhiều người thân trong 1 app duy nhất</p>
+        <span class="feature-badge">Sắp ra mắt</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════ SLIDE 6 — LỢI ÍCH BỆNH NHÂN ══════ -->
+  <div class="slide" data-slide="7" style="justify-content:flex-start;padding-top:28px;">
+
+    <div class="anim slide-title" data-delay="100">Lợi ích cho Bệnh nhân</div>
+    <div class="anim slide-subtitle" data-delay="200">Mỗi bệnh nhân đều xứng đáng hiểu rõ sức khoẻ của mình</div>
+    <div class="benefits-list">
+      <div class="anim benefit-item" data-delay="350">
+        <div class="benefit-icon">🕐</div>
+        <div class="benefit-text"><strong>Tiết kiệm thời gian</strong><span>Scan phiếu trong 30 giây, không cần nhập tay</span></div>
+      </div>
+      <div class="anim benefit-item" data-delay="420">
+        <div class="benefit-icon">💡</div>
+        <div class="benefit-text"><strong>Hiểu kết quả dễ dàng</strong><span>Điểm 0–100 trực quan, màu sắc cảnh báo rõ ràng (Xanh/Vàng/Đỏ)</span></div>
+      </div>
+      <div class="anim benefit-item" data-delay="490">
+        <div class="benefit-icon">📈</div>
+        <div class="benefit-text"><strong>Biết ngay tăng/giảm</strong><span>Biểu đồ xu hướng với mũi tên & % thay đổi — tốt hay xấu nhìn là biết</span></div>
+      </div>
+      <div class="anim benefit-item" data-delay="560">
+        <div class="benefit-icon">🧠</div>
+        <div class="benefit-text"><strong>Không lo quên</strong><span>Toàn bộ lịch sử xét nghiệm lưu trữ tự động trên điện thoại</span></div>
+      </div>
+      <div class="anim benefit-item" data-delay="630">
+        <div class="benefit-icon">💊</div>
+        <div class="benefit-text"><strong>Nhắc uống thuốc & tái khám</strong><span>Không bỏ liều, không quên lịch hẹn — tuân thủ điều trị tốt hơn</span></div>
+      </div>
+      <div class="anim benefit-item" data-delay="700">
+        <div class="benefit-icon">👨‍👩‍👧</div>
+        <div class="benefit-text"><strong>Gia đình yên tâm</strong><span>Người nhà theo dõi & hiểu được sức khoẻ người thân</span></div>
+      </div>
+      <div class="anim benefit-item" data-delay="770">
+        <div class="benefit-icon">🤖</div>
+        <div class="benefit-text"><strong>AI tra cứu kiến thức cơ bản</strong><span>Giải thích ý nghĩa chỉ số ở mức phổ thông, giúp BN chuẩn bị câu hỏi trước khi gặp bác sĩ</span></div>
+      </div>
+      <div class="anim benefit-item" data-delay="840">
+        <div class="benefit-icon">🌐</div>
+        <div class="benefit-text"><strong>Song ngữ Việt / Anh</strong><span>Phù hợp bệnh nhân Việt lẫn quốc tế, chuyển đổi ngôn ngữ dễ dàng</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════ SLIDE 7 — LỢI ÍCH BỆNH VIỆN ══════ -->
+  <div class="slide" data-slide="8">
+
+    <div class="anim slide-title" data-delay="100">Lợi ích cho Bệnh viện</div>
+    <div class="anim slide-subtitle" data-delay="200">Nâng cao chất lượng chăm sóc & giảm tải đội ngũ y bác sĩ</div>
+    <div class="hospital-grid">
+      <div class="anim hospital-card" data-delay="400">
+        <span class="h-icon">📋</span>
+        <h3>Tuân thủ điều trị tốt hơn</h3>
+        <p>Bệnh nhân hiểu bệnh + được nhắc uống thuốc → chấp hành phác đồ</p>
+        <div class="h-stat"><strong>+30%</strong>tuân thủ điều trị khi bệnh nhân được giáo dục sức khoẻ <span style="font-size:10px;color:var(--gray-400);">— PMC RCT study</span></div>
+      </div>
+      <div class="anim hospital-card" data-delay="500">
+        <span class="h-icon">⏱️</span>
+        <h3>Giảm tải cho bác sĩ</h3>
+        <p>BN tự tra cứu kiến thức cơ bản trên app, giảm câu hỏi lặp lại cho bác sĩ</p>
+        <div class="h-stat"><strong>40–80%</strong>con số XN bị quên → BN tự tra cứu trên app, giảm hỏi lại <span style="font-size:10px;color:var(--gray-400);">— PMC / Kessels</span></div>
+      </div>
+      <div class="anim hospital-card" data-delay="600">
+        <span class="h-icon">📅</span>
+        <h3>Tái khám đúng hạn</h3>
+        <p>App nhắc lịch + bệnh nhân thấy rõ sự cấp thiết từ chỉ số</p>
+        <div class="h-stat"><strong>20–30%</strong>tỷ lệ bệnh nhân bỏ lỡ lịch tái khám hiện tại <span style="font-size:10px;color:var(--gray-400);">— PMC systematic review</span></div>
+      </div>
+      <div class="anim hospital-card" data-delay="700">
+        <span class="h-icon">🏆</span>
+        <h3>Nâng cao hình ảnh Bệnh viện</h3>
+        <p>Áp dụng y tế số — khẳng định bệnh viện hiện đại, đi đầu trong chuyển đổi số y tế</p>
+        <div class="h-stat"><strong>$1,26 tỷ</strong>Chính phủ VN đầu tư cho y tế số năm 2024 <span style="font-size:10px;color:var(--gray-400);">— KPMG</span></div>
+      </div>
+      <div class="anim hospital-card" data-delay="800">
+        <span class="h-icon">🔗</span>
+        <h3>Chia sẻ dữ liệu với bác sĩ</h3>
+        <p>Bệnh nhân chia sẻ kết quả trực tiếp — bác sĩ có đầy đủ lịch sử</p>
+        <div class="h-stat"><strong>Roadmap</strong>Xuất PDF, chia sẻ qua QR code, tích hợp hệ thống BV</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════ SLIDE 8 — KẾ HOẠCH HỢP TÁC ══════ -->
+  <div class="slide" data-slide="9">
+
+    <div class="anim slide-title" data-delay="100">Kế hoạch hợp tác</div>
+    <div class="anim slide-subtitle" data-delay="200">Lộ trình triển khai rõ ràng, từng bước vững chắc</div>
+    <div class="timeline">
+      <div class="anim timeline-item" data-delay="400">
+        <div class="timeline-dot">1</div>
+        <div class="timeline-content">
+          <div class="timeline-phase">Giai đoạn 1 — Thử nghiệm (1–3 tháng)</div>
+          <h3>Pilot với nhóm bệnh nhân</h3>
+          <p>Triển khai thử nghiệm với 50–100 bệnh nhân. Đo lường phản hồi, tỷ lệ tuân thủ & mức độ hài lòng.</p>
+        </div>
+      </div>
+      <div class="anim timeline-item" data-delay="600">
+        <div class="timeline-dot">2</div>
+        <div class="timeline-content">
+          <div class="timeline-phase">Giai đoạn 2 — Tích hợp (3–6 tháng)</div>
+          <h3>Branding & mở rộng</h3>
+          <p>Tích hợp logo, màu sắc bệnh viện trong app. Mở rộng cho toàn bộ bệnh nhân khám sức khoẻ định kỳ.</p>
+        </div>
+      </div>
+      <div class="anim timeline-item" data-delay="800">
+        <div class="timeline-dot">3</div>
+        <div class="timeline-content">
+          <div class="timeline-phase">Giai đoạn 3 — Nâng cao (6–12 tháng)</div>
+          <h3>Tính năng chuyên sâu</h3>
+          <p>Nhắc uống thuốc thông minh, xuất báo cáo PDF cho bác sĩ, chia sẻ kết quả qua QR code, tích hợp hệ thống bệnh viện.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════ SLIDE 10 — CLOSING ══════ -->
+  <div class="slide closing-slide" data-slide="10">
+    <div class="cover-particles"><div class="particle"></div><div class="particle"></div><div class="particle"></div></div>
+    <div class="cover-content">
+      <div class="anim closing-title" data-delay="0">Cùng nhau nâng cao<br>trải nghiệm sức khoẻ</div>
+      <div class="anim closing-sub" data-delay="300">Sẵn sàng thử nghiệm?</div>
+      <div class="anim" data-delay="500">
+        <button class="cta-btn" onclick="alert('Cảm ơn bạn quan tâm! Hãy liên hệ để bắt đầu pilot.')">🚀 Bắt đầu Pilot ngay</button>
+      </div>
+      <div class="anim closing-contact" data-delay="700">
+        <strong>Liên hệ hợp tác</strong><br>
+        Email: contact@nhatkysk.vn<br>
+        Hotline: 0123 456 789
+      </div>
+      <div class="anim thank-you" data-delay="900">🙏</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Navigation -->
+<div class="slide-counter" id="counter">1 / 11</div>
+<div class="progress-bar" id="progress" style="width: 9.1%"></div>
+<div class="nav-controls">
+  <button class="nav-btn" id="prevBtn" onclick="navigate(-1)" disabled>&#8592;</button>
+  <button class="nav-btn" id="nextBtn" onclick="navigate(1)">&#8594;</button>
+</div>
+<div class="key-hint"><kbd>←</kbd><kbd>→</kbd> hoặc <kbd>Space</kbd> để chuyển slide</div>
+
+<script>
+  const TOTAL = 11;
+  let current = 0;
+  let transitioning = false;
+
+  const slides = document.querySelectorAll('.slide');
+  const counter = document.getElementById('counter');
+  const progress = document.getElementById('progress');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+
+  function showSlide(index) {
+    slides.forEach((s, i) => {
+      s.classList.remove('active', 'exit-left');
+      if (i !== index) s.querySelectorAll('.anim').forEach(el => el.classList.remove('visible'));
+    });
+    slides[index].classList.add('active');
+    counter.textContent = `${index + 1} / ${TOTAL}`;
+    progress.style.width = `${((index + 1) / TOTAL) * 100}%`;
+    prevBtn.disabled = index === 0;
+    nextBtn.disabled = index === TOTAL - 1;
+    const anims = slides[index].querySelectorAll('.anim');
+    anims.forEach(el => {
+      const delay = parseInt(el.dataset.delay || 0);
+      setTimeout(() => el.classList.add('visible'), delay + 100);
+    });
+  }
+
+  function navigate(dir) {
+    if (transitioning) return;
+    const next = current + dir;
+    if (next < 0 || next >= TOTAL) return;
+    transitioning = true;
+    if (dir > 0) slides[current].classList.add('exit-left');
+    current = next;
+    setTimeout(() => { showSlide(current); transitioning = false; }, dir > 0 ? 200 : 50);
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); navigate(1); }
+    else if (e.key === 'ArrowLeft') { e.preventDefault(); navigate(-1); }
+  });
+
+  let touchStartX = 0;
+  document.addEventListener('touchstart', (e) => { touchStartX = e.changedTouches[0].screenX; });
+  document.addEventListener('touchend', (e) => {
+    const diff = touchStartX - e.changedTouches[0].screenX;
+    if (Math.abs(diff) > 60) navigate(diff > 0 ? 1 : -1);
+  });
+
+  showSlide(0);
+
+  /* ═══════════════════════════════════
+     DEMO CAROUSEL LOGIC
+     ═══════════════════════════════════ */
+  const demoScreens = [
+    {
+      title: 'Dashboard — Tổng quan sức khoẻ',
+      desc: 'Điểm sức khoẻ tổng thể <strong>80/100</strong> hiển thị trực quan bằng vòng tròn màu xanh. Cảnh báo chỉ số bất thường (<strong>CRP +70%</strong>, <strong>Đường huyết 126</strong>) ngay trên đầu trang. Lịch sử <strong>5 lần xét nghiệm</strong> gần nhất hiện số chỉ số & số bất thường.'
+    },
+    {
+      title: 'Scan — Quét phiếu xét nghiệm',
+      desc: 'Chỉ cần <strong>chụp ảnh</strong> hoặc <strong>upload file</strong> (PDF, ảnh). AI Gemini Vision tự động nhận diện và trích xuất <strong>34 chỉ số</strong>. Có hướng dẫn chụp ảnh rõ ràng: đặt phẳng, đủ sáng, giữ vững.'
+    },
+    {
+      title: 'Chỉ số — Danh sách biomarker',
+      desc: 'Xem toàn bộ <strong>34 chỉ số</strong> cùng giá trị, khoảng tham chiếu và <strong>xu hướng tăng/giảm</strong> (%). Lọc nhanh theo: Tất cả / Bất thường (17) / Bình thường. Có <strong>17 chỉ số cần lưu ý</strong> được cảnh báo rõ ràng.'
+    },
+    {
+      title: 'Biểu đồ — Xu hướng theo thời gian',
+      desc: 'Biểu đồ chi tiết từng chỉ số với <strong>vùng tham chiếu xanh</strong>. Bạch cầu (WBC) <strong>12,5</strong> — tăng <strong>+15,7%</strong> so với lần trước. Xem lịch sử 6 tháng / 1 năm / 2 năm. Nhìn là biết xu hướng tốt hay xấu.'
+    },
+    {
+      title: 'AI Chat — Trợ lý sức khoẻ 24/7',
+      desc: 'Hỏi AI bất cứ câu hỏi nào: "<em>Glucose 126 có nguy hiểm không?</em>", "<em>Cholesterol cao nên ăn gì?</em>". AI hiểu <strong>ngữ cảnh cá nhân</strong> — biết lịch sử chỉ số của bệnh nhân. Gợi ý câu hỏi thông minh.'
+    },
+    {
+      title: 'Nhắc thuốc — Tuân thủ điều trị',
+      desc: 'Theo dõi tuân thủ uống thuốc hàng tuần (<strong>85%</strong>). Lịch uống: Metformin 500mg (sáng) ✓, Atorvastatin 10mg (tối). Insight: "<em>Uống thuốc đều 85% → Glucose giảm 11%</em>". Nhắc lịch <strong>tái khám Nội tiết 15/04</strong>.'
+    },
+    {
+      title: 'Gia đình — Quản lý nhiều người',
+      desc: 'Theo dõi sức khoẻ <strong>nhiều thành viên</strong> trong gia đình: Tôi, Bà, Mẹ. Mỗi người có hồ sơ riêng, điểm sức khoẻ riêng. Cài đặt ngôn ngữ, xem lịch sử xét nghiệm, chuyển profile chỉ 1 chạm.'
+    },
+    {
+      title: 'Thông báo — Nhắc trên Lock Screen',
+      desc: 'Notification <strong>nhắc uống thuốc đúng giờ</strong> hiện ngay trên màn hình khoá: "<em>Đến giờ uống thuốc! Metformin 500mg</em>". Cảnh báo nếu <strong>quên uống</strong>: "<em>Bạn quên uống Aspirin tối qua!</em>". Không cần mở app.'
+    },
+    {
+      title: 'Đặt lịch hẹn khám',
+      desc: 'Đặt lịch tái khám trực tiếp trong app. Chọn <strong>chuyên khoa</strong> (Nội tổng quát, Nội tiết, Tim mạch, Thận), chọn <strong>bác sĩ</strong> với đánh giá. Chọn <strong>ngày & giờ</strong> phù hợp, ghi lý do khám. Xác nhận đặt lịch chỉ 1 chạm.'
+    }
+  ];
+
+  const demoImgs = document.querySelectorAll('#demoScreen img');
+  const demoDotsCtn = document.getElementById('demoDots');
+  const demoThumbsCtn = document.getElementById('demoThumbs');
+  let demoIdx = 0;
+  let autoplayTimer = null;
+  let isAutoplay = false;
+
+  // Build dots
+  demoScreens.forEach((_, i) => {
+    const dot = document.createElement('div');
+    dot.className = 'demo-dot' + (i === 0 ? ' dot-active' : '');
+    dot.onclick = () => goDemo(i);
+    demoDotsCtn.appendChild(dot);
+  });
+
+  // Build thumbs
+  const thumbSrcs = [
+    'screenshots/01-dashboard.png', 'screenshots/02-scan.png',
+    'screenshots/03-biomarkers.png', 'screenshots/04-chart-detail.png',
+    'screenshots/05-ai-chat.png', 'screenshots/06-med-reminder.png',
+    'screenshots/07-family.png', 'screenshots/08-lockscreen.png',
+    'screenshots/09-book-appointment.png'
+  ];
+  thumbSrcs.forEach((src, i) => {
+    const t = document.createElement('div');
+    t.className = 'demo-thumb' + (i === 0 ? ' thumb-active' : '');
+    t.innerHTML = '<img src="' + src + '" alt="">';
+    t.onclick = () => goDemo(i);
+    demoThumbsCtn.appendChild(t);
+  });
+
+  function goDemo(idx) {
+    demoIdx = idx;
+    // Update main image
+    demoImgs.forEach(img => img.classList.remove('demo-active'));
+    demoImgs[idx].classList.add('demo-active');
+    // Update dots
+    demoDotsCtn.querySelectorAll('.demo-dot').forEach((d, i) => {
+      d.classList.toggle('dot-active', i === idx);
+    });
+    // Update thumbs
+    demoThumbsCtn.querySelectorAll('.demo-thumb').forEach((t, i) => {
+      t.classList.toggle('thumb-active', i === idx);
+    });
+    // Update info
+    document.getElementById('demoStepNum').textContent = idx + 1;
+    document.getElementById('demoTitle').textContent = demoScreens[idx].title;
+    document.getElementById('demoDesc').innerHTML = demoScreens[idx].desc;
+  }
+
+  function toggleAutoplay() {
+    isAutoplay = !isAutoplay;
+    const btn = document.getElementById('demoAutoplay');
+    const icon = document.getElementById('playIcon');
+    const label = document.getElementById('playLabel');
+    if (isAutoplay) {
+      btn.classList.add('playing');
+      icon.innerHTML = '&#9646;&#9646;';
+      label.textContent = 'Đang phát...';
+      autoplayTimer = setInterval(() => {
+        goDemo((demoIdx + 1) % demoScreens.length);
+      }, 3000);
+    } else {
+      btn.classList.remove('playing');
+      icon.innerHTML = '&#9654;';
+      label.textContent = 'Tự động phát';
+      clearInterval(autoplayTimer);
+    }
+  }
+
+  // Stop autoplay when navigating away from demo slide
+  const origShowSlide = showSlide;
+  showSlide = function(index) {
+    if (isAutoplay && index !== 4) {
+      isAutoplay = false;
+      clearInterval(autoplayTimer);
+      const btn = document.getElementById('demoAutoplay');
+      if (btn) {
+        btn.classList.remove('playing');
+        document.getElementById('playIcon').innerHTML = '&#9654;';
+        document.getElementById('playLabel').textContent = 'Tự động phát';
+      }
+    }
+    origShowSlide(index);
+  };
+</script>
+</body>
+</html>
